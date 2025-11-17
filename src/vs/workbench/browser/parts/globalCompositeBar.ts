@@ -102,21 +102,12 @@ export class GlobalCompositeBar extends Disposable {
 			preventLoopNavigation: true
 		}));
 
-		if (this.accountsVisibilityPreference) {
-			this.globalActivityActionBar.push(this.accountAction, { index: GlobalCompositeBar.ACCOUNTS_ACTION_INDEX });
-		}
-
 		this.globalActivityActionBar.push(this.globalActivityAction);
 
 		this.registerListeners();
 	}
 
 	private registerListeners(): void {
-		this.extensionService.whenInstalledExtensionsRegistered().then(() => {
-			if (!this._store.isDisposed) {
-				this._register(this.storageService.onDidChangeValue(StorageScope.PROFILE, AccountsActivityActionViewItem.ACCOUNTS_VISIBILITY_PREFERENCE_KEY, this._store)(() => this.toggleAccountsActivity()));
-			}
-		});
 	}
 
 	create(parent: HTMLElement): void {
@@ -132,7 +123,7 @@ export class GlobalCompositeBar extends Disposable {
 	}
 
 	getContextMenuActions(): IAction[] {
-		return [toAction({ id: 'toggleAccountsVisibility', label: localize('accounts', "Accounts"), checked: this.accountsVisibilityPreference, run: () => this.accountsVisibilityPreference = !this.accountsVisibilityPreference })];
+		return [];
 	}
 
 	private toggleAccountsActivity() {
