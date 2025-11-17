@@ -172,6 +172,9 @@ export class AuthenticationService extends Disposable implements IAuthentication
 	}
 
 	registerDeclaredAuthenticationProvider(provider: AuthenticationProviderInformation): void {
+		if (provider.id === 'github') {
+			return;
+		}
 		if (isFalsyOrWhitespace(provider.id)) {
 			throw new Error(localize('authentication.missingId', 'An authentication contribution must specify an id.'));
 		}
@@ -198,6 +201,9 @@ export class AuthenticationService extends Disposable implements IAuthentication
 	}
 
 	registerAuthenticationProvider(id: string, authenticationProvider: IAuthenticationProvider): void {
+		if (id === 'github') {
+			return;
+		}
 		this._authenticationProviders.set(id, authenticationProvider);
 		const disposableStore = new DisposableStore();
 		disposableStore.add(authenticationProvider.onDidChangeSessions(e => this._onDidChangeSessions.fire({
